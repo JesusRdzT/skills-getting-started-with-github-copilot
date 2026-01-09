@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Build participants list
         const participantsList = details.participants.length > 0
-          ? `<ul class="participants-list">${details.participants.map(p => `<li><span>${p}</span><button class="delete-btn" data-activity="${name}" data-email="${p}" type="button">✕</button></li>`).join('')}</ul>`
+          ? `<ul class="participants-list">${details.participants.map(p => `<li><span>${p}</span><button class="delete-btn" data-activity="${name}" data-email="${p}" type="button" aria-label="Remove ${p}">✕</button></li>`).join('')}</ul>`
           : '<p class="no-participants"><em>No participants yet</em></p>';
 
         activityCard.innerHTML = `
