@@ -148,7 +148,8 @@ class TestUnregisterEndpoint:
         email = "removeme@mergington.edu"
         
         # Sign up
-        client.post(f"/activities/Art%20Studio/signup?email={email}")
+        signup_response = client.post(f"/activities/Art%20Studio/signup?email={email}")
+        assert signup_response.status_code == 200
         
         # Get count with participant
         response1 = client.get("/activities")
