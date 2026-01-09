@@ -20,11 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const spotsLeft = details.max_participants - details.participants.length;
 
-        // Build participants list
-        const participantsList = details.participants.length > 0
-          ? `<ul class="participants-list">${details.participants.map(p => `<li><span>${p}</span><button class="delete-btn" data-activity="${name}" data-email="${p}" type="button" aria-label="Remove ${p}">✕</button></li>`).join('')}</ul>`
-          : '<p class="no-participants"><em>No participants yet</em></p>';
-
+        // Build activity card structure
         activityCard.innerHTML = `
           <h4>${name}</h4>
           <p>${details.description}</p>
@@ -32,9 +28,43 @@ document.addEventListener("DOMContentLoaded", () => {
           <p><strong>Availability:</strong> ${spotsLeft} spots left</p>
           <div class="participants-section">
             <strong>Signed Up:</strong>
-            ${participantsList}
           </div>
         `;
+
+        // Build participants list safely using DOM methods
+        const participantsSection = activityCard.querySelector('.participants-section');
+        if (details.participants.length > 0) {
+          const ul = document.createElement('ul');
+          ul.className = 'participants-list';
+          
+          details.participants.forEach(p => {
+            const li = document.createElement('li');
+            
+            const span = document.createElement('span');
+            span.textContent = p; // Safe: uses textContent instead of innerHTML
+            
+            const button = document.createElement('button');
+            button.className = 'delete-btn';
+            button.type = 'button';
+            button.dataset.activity = name;
+            button.dataset.email = p;
+            button.setAttribute('aria-label', `Remove ${p}`);
+            button.textContent = '✕';
+            
+            li.appendChild(span);
+            li.appendChild(button);
+            ul.appendChild(li);
+          });
+          
+          participantsSection.appendChild(ul);
+        } else {
+          const p = document.createElement('p');
+          p.className = 'no-participants';
+          const em = document.createElement('em');
+          em.textContent = 'No participants yet';
+          p.appendChild(em);
+          participantsSection.appendChild(p);
+        }
 
         activitiesList.appendChild(activityCard);
 
