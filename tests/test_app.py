@@ -2,18 +2,19 @@
 
 import pytest
 from fastapi.testclient import TestClient
+import importlib
 import sys
 from pathlib import Path
 
 # Add src directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from app import app
 
 @pytest.fixture
 def client():
-    """Create a test client for the FastAPI app"""
-    return TestClient(app)
+    """Create a test client for the FastAPI app with fresh state per test"""
+    app_module = importlib.reload(importlib.import_module("app"))
+    return TestClient(app_module.app)
 
 
 class TestActivitiesEndpoint:
