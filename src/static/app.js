@@ -48,7 +48,8 @@ document.addEventListener("DOMContentLoaded", () => {
             button.type = 'button';
             button.dataset.activity = name;
             button.dataset.email = p;
-            button.setAttribute('aria-label', `Remove ${p}`);
+            // Safe: setAttribute properly escapes attribute values
+            button.setAttribute('aria-label', 'Remove ' + p);
             button.textContent = '✕';
             
             li.appendChild(span);
